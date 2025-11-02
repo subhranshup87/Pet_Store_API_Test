@@ -4,9 +4,7 @@ import utils.PetPayload;
 import io.cucumber.java.en.*;
 import io.restassured.response.Response;
 import io.restassured.http.ContentType;
-
 import java.util.concurrent.TimeUnit;
-
 import static io.restassured.RestAssured.*;
 import static org.awaitility.Awaitility.await;
 import static org.hamcrest.Matchers.*;
