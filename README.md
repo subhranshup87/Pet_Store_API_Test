@@ -11,19 +11,26 @@ This project implements automated API tests for the Pet Store API using REST Ass
 - Allure Reports 2.24.0
 - Jackson Databind 2.15.0
 - Maven
+- Docker & Docker Compose (for containerized execution)
 
 ## Project Structure
 ```
-src/
-├── test/
-    ├── java/
-    │   ├── features/      # Cucumber feature files
-    │   ├── model/         # POJO classes for request/response
-    │   ├── runner/        # Test runner configuration
-    │   ├── steps/         # Step definitions
-    │   └── utils/         # Utility classes
-    └── resources/
-        └── allure.properties
+├── src/
+│   └── test/
+│       ├── java/
+│       │   ├── features/      # Cucumber feature files
+│       │   ├── model/         # POJO classes for request/response
+│       │   ├── runner/        # Test runner configuration
+│       │   ├── steps/         # Step definitions
+│       │   └── utils/         # Utility classes
+│       └── resources/
+│           └── allure.properties
+├── .github/
+│   └── workflows/           # GitHub Actions CI configuration
+├── Dockerfile              # Docker configuration
+├── docker-compose.yml     # Docker Compose configuration
+├── pom.xml                # Maven dependencies and build configuration
+└── run-tests.sh          # Shell script to run tests
 ```
 
 ## Features
@@ -38,8 +45,11 @@ src/
 - Java JDK 17 or higher
 - Maven 3.6 or higher
 - Allure command-line tools (optional, for viewing reports)
+- Docker and Docker Compose (optional, for containerized execution)
 
 ## Running the Tests
+
+### Local Execution
 1. Clone the repository:
    ```bash
    git clone https://github.com/subhranshup87/Rest_Assured_Pet_Store_API_Test.git
@@ -51,9 +61,36 @@ src/
    mvn clean test
    ```
 
-3. Generate and view Allure report:
+3. Run tests using the provided shell script:
    ```bash
-   mvn allure:serve
+   chmod +x run-tests.sh
+   ./run-tests.sh
+   ```
+
+### Docker Execution
+1. Build and run tests using Docker Compose:
+   ```bash
+   docker-compose up --build
+   ```
+
+### Viewing Test Reports
+After test execution, the Allure report will be generated. You can view it using:
+
+1. Allure Command Line:
+   ```bash
+   allure open allure-report
+   ```
+
+2. Simple HTTP Server:
+   ```bash
+   npx http-server allure-report
+   ```
+
+3. Local Browser:
+   ```bash
+   open allure-report/index.html  # On macOS
+   xdg-open allure-report/index.html  # On Linux
+   start allure-report/index.html  # On Windows
    ```
 
 ## Test Scenarios
