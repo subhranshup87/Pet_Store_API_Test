@@ -6,12 +6,20 @@ on:
   pull_request:
     branches: [ "main" ]
 
+# Sets permissions of the GITHUB_TOKEN
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Allow one concurrent deployment
+concurrency:
+  group: "pages"
+  cancel-in-progress: true
+
 jobs:
   test:
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
-      pages: write
 
     steps:
     - uses: actions/checkout@v3
@@ -33,10 +41,15 @@ jobs:
         sudo ln -s /opt/allure-2.24.0/bin/allure /usr/bin/allure
         allure generate target/allure-results --clean -o allure-report
         
-    - name: Deploy to GitHub Pages
-      uses: peaceiris/actions-gh-pages@v3
-      if: github.ref == 'refs/heads/main'
+    - name: Setup Pages
+      uses: actions/configure-pages@v3
+
+    - name: Upload artifact
+      uses: actions/upload-pages-artifact@v2
       with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: ./allure-report
-        force_orphan: true
+        path: './allure-report'
+
+    - name: Deploy to GitHub Pages
+      id: deployment
+      uses: actions/deploy-pages@v2
+      if: github.ref == 'refs/heads/main'
