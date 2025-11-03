@@ -5,8 +5,8 @@ on:
     branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
+  workflow_dispatch:
 
-# Sets permissions of the GITHUB_TOKEN
 permissions:
   contents: write
   pages: write
@@ -14,7 +14,6 @@ permissions:
   actions: write
   deployments: write
 
-# Allow one concurrent deployment
 concurrency:
   group: "pages"
   cancel-in-progress: true
@@ -33,27 +32,34 @@ jobs:
         distribution: 'temurin'
         cache: maven
         
-    - name: Run Tests
+    - name: Build and Test
       run: mvn clean test
-    
-    - name: Generate Allure Report
+        
+    - name: Setup and Generate Allure Report
+      if: success() || failure()
       run: |
+        # Install Allure
         curl -o allure-2.24.0.tgz -OLs https://repo.maven.apache.org/maven2/io/qameta/allure/allure-commandline/2.24.0/allure-commandline-2.24.0.tgz
         sudo tar -zxvf allure-2.24.0.tgz -C /opt/
-        sudo ln -s /opt/allure-2.24.0/bin/allure /usr/bin/allure
+        sudo ln -sf /opt/allure-2.24.0/bin/allure /usr/bin/allure
+        
+        # Clean old report
+        rm -rf allure-report || true
+        
+        # Generate new report
         allure generate target/allure-results --clean -o allure-report
+        echo "Report generated at $(date)" > allure-report/generated.txt
         
     - name: Setup Pages
+      if: success() || failure()
       uses: actions/configure-pages@v4
-      with:
-        enablement: true
 
     - name: Upload artifact
+      if: success() || failure()
       uses: actions/upload-pages-artifact@v3
       with:
-        path: './allure-report'
-        retention-days: 30
+        path: 'allure-report'
 
     - name: Deploy to GitHub Pages
-      id: deployment
+      if: success() || failure()
       uses: actions/deploy-pages@v4
