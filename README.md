@@ -70,3 +70,20 @@ The project uses Allure for test reporting, which provides:
 - Test execution timeline
 - Attachments and screenshots (if any)
 - Test suite analytics
+
+## CI/CD Integration
+This project is configured with GitHub Actions for Continuous Integration and Continuous Deployment:
+
+- Automated test execution on push and pull requests to main branch
+- Java 17 environment setup with Maven caching
+- Automatic Allure report generation
+- Report deployment to GitHub Pages
+- View the latest test results at: https://subhranshup87.github.io/Rest_Assured_Pet_Store_API_Test/
+
+### CI/CD Workflow
+1. On push/PR to main branch, GitHub Actions:
+   - Sets up JDK 17
+   - Builds the project
+   - Runs all tests
+   - Generates Allure report
+   - Deploys report to GitHub Pages
