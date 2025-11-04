@@ -11,7 +11,6 @@ This project implements automated API tests for the Pet Store API using REST Ass
 - Allure Reports 2.24.0
 - Jackson Databind 2.15.0
 - Maven
-- Docker & Docker Compose (for containerized execution)
 
 ## Project Structure
 ```
@@ -24,11 +23,10 @@ This project implements automated API tests for the Pet Store API using REST Ass
 │       │   ├── steps/         # Step definitions
 │       │   └── utils/         # Utility classes
 │       └── resources/
-│           └── allure.properties
+│           ├── allure.properties
+│           └── config.properties
 ├── .github/
 │   └── workflows/           # GitHub Actions CI configuration
-├── Dockerfile              # Docker configuration
-├── docker-compose.yml     # Docker Compose configuration
 ├── pom.xml                # Maven dependencies and build configuration
 └── run-tests.sh          # Shell script to run tests
 ```
@@ -45,7 +43,6 @@ This project implements automated API tests for the Pet Store API using REST Ass
 - Java JDK 17 or higher
 - Maven 3.6 or higher
 - Allure command-line tools (optional, for viewing reports)
-- Docker and Docker Compose (optional, for containerized execution)
 
 ## Running the Tests
 
@@ -67,30 +64,24 @@ This project implements automated API tests for the Pet Store API using REST Ass
    ./run-tests.sh
    ```
 
-### Docker Execution
-1. Build and run tests using Docker Compose:
-   ```bash
-   docker-compose up --build
-   ```
-
-### Viewing Test Reports
+## Viewing Test Reports
 After test execution, the Allure report will be generated. You can view it using:
 
 1. Allure Command Line:
    ```bash
-   allure open allure-report
+   allure open target/allure-report
    ```
 
 2. Simple HTTP Server:
    ```bash
-   npx http-server allure-report
+   npx http-server target/allure-report
    ```
 
 3. Local Browser:
    ```bash
-   open allure-report/index.html  # On macOS
-   xdg-open allure-report/index.html  # On Linux
-   start allure-report/index.html  # On Windows
+   open target/allure-report/index.html  # On macOS
+   xdg-open target/allure-report/index.html  # On Linux
+   start target/allure-report/index.html  # On Windows
    ```
 
 ## Test Scenarios
